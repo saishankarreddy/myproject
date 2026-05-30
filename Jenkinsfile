@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
+                bat '''
                 docker build -t $IMAGE_NAME:$IMAGE_TAG .
                 '''
             }
@@ -32,7 +32,7 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-                    sh '''
+                    bat '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                     '''
                 }
@@ -41,7 +41,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                sh '''
+                bat '''
                 docker push $IMAGE_NAME:$IMAGE_TAG
                 '''
             }
@@ -49,7 +49,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh '''
+                bat '''
                 docker stop django-container || true
                 docker rm django-container || true
 
